@@ -1,48 +1,63 @@
 package itsfine.com.syncpaidparkingchecker.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import itsfine.com.syncpaidparkingchecker.dto.Sensor;
+import itsfine.com.syncpaidparkingchecker.dto.ParkObject;
 import itsfine.com.syncpaidparkingchecker.interfaces.IPaidParkingChecker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.integration.support.MessageBuilder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 
+@Service
 @EnableBinding(IPaidParkingChecker.class)
 public class PaidParkingCheckerService {
     ObjectMapper mapper = new ObjectMapper().findAndRegisterModules();
+
+    private final String URL_IS_PAID;
+
+    @Autowired
+    public PaidParkingCheckerService(@Value("${urlcheckpaid}") String url) {
+        this.URL_IS_PAID = url;
+    }
 
     @Autowired
     IPaidParkingChecker paidParkingChecker;
 
     @StreamListener(IPaidParkingChecker.INPUT)
     void checkPaid(String sensorStrData) throws IOException {
-        Sensor sensor = mapper.readValue(sensorStrData, Sensor.class);
+        ParkObject parkObject = mapper.readValue(sensorStrData, ParkObject.class);
 
-        if (checkParkingPaidByApi(sensor.car_number)) {
+        if (checkParkingPaidByApi(parkObject.car_number)) {
             paidParkingChecker.output().send(MessageBuilder.withPayload(sensorStrData).build());
             paidParkingChecker.notPaidRout().send(MessageBuilder.withPayload(sensorStrData).build());
         }
     }
 
-    private boolean checkParkingPaidByApi(String car_number){
+    private boolean checkParkingPaidByApi(String car_number) {
 
         RestTemplate restTemplate = new RestTemplate();
 
         //API request
         HttpEntity<String> httpEntity = new HttpEntity<>(null);
 
-        String url = "http://localhost:8989/checkpaid?car_number=" + car_number;
+        String url = URL_IS_PAID + car_number;
 
-        ResponseEntity<Boolean> responseEntity =
-                restTemplate.exchange(url, HttpMethod.GET, httpEntity, Boolean.class);
-        if (responseEntity.getBody()) return responseEntity.getBody();
+        try {
+            ResponseEntity<Boolean> responseEntity =
+                    restTemplate.exchange(url, HttpMethod.GET, httpEntity, Boolean.class);
+            if (responseEntity.getBody()) return responseEntity.getBody();
+        } catch (RestClientException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 

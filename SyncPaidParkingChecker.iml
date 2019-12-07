@@ -24,9 +24,6 @@
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-validation:2.2.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: jakarta.validation:jakarta.validation-api:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:9.0.27" level="project" />
-    <orderEntry type="library" name="Maven: org.hibernate.validator:hibernate-validator:6.0.18.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.4.1.Final" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml:classmate:1.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.2.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.2.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.integration:spring-integration-core:5.2.1.RELEASE" level="project" />
@@ -107,5 +104,9 @@
     <orderEntry type="library" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.27" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-web:5.2.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:5.2.1.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate.validator:hibernate-validator:6.0.16.Final" level="project" />
+    <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.jboss.logging:jboss-logging:3.4.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml:classmate:1.5.1" level="project" />
   </component>
 </module>

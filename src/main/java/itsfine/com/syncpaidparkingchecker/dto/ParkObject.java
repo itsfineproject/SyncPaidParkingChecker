@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Data
-public class Sensor {
+public class ParkObject {
     public int parking_id;
     public String car_number;
     public LocalDateTime date_time;
