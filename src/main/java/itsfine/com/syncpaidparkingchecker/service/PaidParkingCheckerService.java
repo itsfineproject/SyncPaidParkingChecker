@@ -33,12 +33,12 @@ public class PaidParkingCheckerService {
     IPaidParkingChecker paidParkingChecker;
 
     @StreamListener(IPaidParkingChecker.INPUT)
-    void checkPaid(String sensorStrData) throws IOException {
-        ParkObject parkObject = mapper.readValue(sensorStrData, ParkObject.class);
+    void checkPaid(String parkObjectData) throws IOException {
+        ParkObject parkObject = mapper.readValue(parkObjectData, ParkObject.class);
 
         if (checkParkingPaidByApi(parkObject.car_number)) {
-            paidParkingChecker.output().send(MessageBuilder.withPayload(sensorStrData).build());
-            paidParkingChecker.notPaidRout().send(MessageBuilder.withPayload(sensorStrData).build());
+            paidParkingChecker.output().send(MessageBuilder.withPayload(parkObjectData).build());
+            paidParkingChecker.notPaidRout().send(MessageBuilder.withPayload(parkObjectData).build());
         }
     }
 
@@ -54,7 +54,7 @@ public class PaidParkingCheckerService {
         try {
             ResponseEntity<Boolean> responseEntity =
                     restTemplate.exchange(url, HttpMethod.GET, httpEntity, Boolean.class);
-            if (responseEntity.getBody()) return responseEntity.getBody();
+            return responseEntity.getBody();
         } catch (RestClientException e) {
             e.printStackTrace();
         }
