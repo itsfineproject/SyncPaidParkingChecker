@@ -36,10 +36,7 @@ public class PaidParkingCheckerService {
     void checkPaid(String parkObjectData) throws IOException {
         ParkObject parkObject = mapper.readValue(parkObjectData, ParkObject.class);
 
-        if (checkParkingPaidByApi(parkObject.car_number)) {
-            paidParkingChecker.output().send(MessageBuilder.withPayload(parkObjectData).build());
-            paidParkingChecker.notPaidRout().send(MessageBuilder.withPayload(parkObjectData).build());
-        }
+        isValidToSendData(parkObjectData, checkParkingPaidByApi(parkObject.car_number));
     }
 
     private boolean checkParkingPaidByApi(String car_number) {
@@ -57,6 +54,15 @@ public class PaidParkingCheckerService {
             return responseEntity.getBody();
         } catch (RestClientException e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isValidToSendData(String parkObjectData, boolean isNotPaid){
+        if (isNotPaid) {
+            paidParkingChecker.output().send(MessageBuilder.withPayload(parkObjectData).build());
+            paidParkingChecker.notPaidRout().send(MessageBuilder.withPayload(parkObjectData).build());
+            return true;
         }
         return false;
     }

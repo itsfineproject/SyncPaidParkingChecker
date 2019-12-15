@@ -69,10 +69,18 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--   hibernate-validator     -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>6.0.16.Final</version>
+        </dependency>
+
+        <!--   junit     -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.5.2</version>
         </dependency>
 
     </dependencies>
